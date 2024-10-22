@@ -1,8 +1,34 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterOfCoin.API", "MasterOfCoin.Service\MasterOfCoin.API\MasterOfCoin.API.csproj", "{D255D340-0736-4EB9-9B11-39B11A801EAE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LibComponents", "LibComponents", "{2A7C2854-7E8B-44A9-85E5-A73ECF60A716}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.Service", "LibComponents\Lib.Service\Lib.Service.csproj", "{2EC31A4E-E0B3-4AF4-9901-CF442591B617}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.Db", "LibComponents\Lib.Db\Lib.Db.csproj", "{02EE83CE-B878-494E-BD70-015BBD67036B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D255D340-0736-4EB9-9B11-39B11A801EAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D255D340-0736-4EB9-9B11-39B11A801EAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D255D340-0736-4EB9-9B11-39B11A801EAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D255D340-0736-4EB9-9B11-39B11A801EAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EC31A4E-E0B3-4AF4-9901-CF442591B617}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EC31A4E-E0B3-4AF4-9901-CF442591B617}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EC31A4E-E0B3-4AF4-9901-CF442591B617}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EC31A4E-E0B3-4AF4-9901-CF442591B617}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02EE83CE-B878-494E-BD70-015BBD67036B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02EE83CE-B878-494E-BD70-015BBD67036B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02EE83CE-B878-494E-BD70-015BBD67036B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02EE83CE-B878-494E-BD70-015BBD67036B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2EC31A4E-E0B3-4AF4-9901-CF442591B617} = {2A7C2854-7E8B-44A9-85E5-A73ECF60A716}
+		{02EE83CE-B878-494E-BD70-015BBD67036B} = {2A7C2854-7E8B-44A9-85E5-A73ECF60A716}
 	EndGlobalSection
 EndGlobal
