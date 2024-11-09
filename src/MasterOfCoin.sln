@@ -1,12 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterOfCoin.API", "MasterOfCoin.Service\MasterOfCoin.API\MasterOfCoin.API.csproj", "{D255D340-0736-4EB9-9B11-39B11A801EAE}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34928.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterOfCoin.API", "MasterOfCoin.Service\MasterOfCoin.API\MasterOfCoin.API.csproj", "{D255D340-0736-4EB9-9B11-39B11A801EAE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LibComponents", "LibComponents", "{2A7C2854-7E8B-44A9-85E5-A73ECF60A716}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.Service", "LibComponents\Lib.Service\Lib.Service.csproj", "{2EC31A4E-E0B3-4AF4-9901-CF442591B617}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lib.Service", "LibComponents\Lib.Service\Lib.Service.csproj", "{2EC31A4E-E0B3-4AF4-9901-CF442591B617}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.Db", "LibComponents\Lib.Db\Lib.Db.csproj", "{02EE83CE-B878-494E-BD70-015BBD67036B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lib.Db", "LibComponents\Lib.Db\Lib.Db.csproj", "{02EE83CE-B878-494E-BD70-015BBD67036B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lib.Scheduler", "LibComponents\Lib.Scheduler\Lib.Scheduler.csproj", "{03027B52-F38B-47C7-9899-0338911150F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.EventTracing", "LibComponents\Lib.EventTracing\Lib.EventTracing.csproj", "{21537F95-96B1-4C0C-AC6F-38E4499F6BD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "docker-compose", "docker-compose\docker-compose.dcproj", "{3C2FBC9A-F27C-4F30-8F14-43D0D04C8E3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,9 +35,26 @@ Global
 		{02EE83CE-B878-494E-BD70-015BBD67036B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02EE83CE-B878-494E-BD70-015BBD67036B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02EE83CE-B878-494E-BD70-015BBD67036B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03027B52-F38B-47C7-9899-0338911150F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03027B52-F38B-47C7-9899-0338911150F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03027B52-F38B-47C7-9899-0338911150F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03027B52-F38B-47C7-9899-0338911150F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21537F95-96B1-4C0C-AC6F-38E4499F6BD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21537F95-96B1-4C0C-AC6F-38E4499F6BD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21537F95-96B1-4C0C-AC6F-38E4499F6BD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21537F95-96B1-4C0C-AC6F-38E4499F6BD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C2FBC9A-F27C-4F30-8F14-43D0D04C8E3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C2FBC9A-F27C-4F30-8F14-43D0D04C8E3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C2FBC9A-F27C-4F30-8F14-43D0D04C8E3A}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C2FBC9A-F27C-4F30-8F14-43D0D04C8E3A}.Release|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2EC31A4E-E0B3-4AF4-9901-CF442591B617} = {2A7C2854-7E8B-44A9-85E5-A73ECF60A716}
 		{02EE83CE-B878-494E-BD70-015BBD67036B} = {2A7C2854-7E8B-44A9-85E5-A73ECF60A716}
+		{03027B52-F38B-47C7-9899-0338911150F2} = {2A7C2854-7E8B-44A9-85E5-A73ECF60A716}
+		{21537F95-96B1-4C0C-AC6F-38E4499F6BD7} = {2A7C2854-7E8B-44A9-85E5-A73ECF60A716}
 	EndGlobalSection
 EndGlobal

@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Lib.Service.Extensions;
 
-public static class ServiceCollectionExtensions
+public static partial class ServiceCollectionExtensions
 {
     public static IServiceCollection AddValidators(this IServiceCollection services, Assembly? controllersAssembly)
     {

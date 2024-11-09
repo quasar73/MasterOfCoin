@@ -5,16 +5,18 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <UserSecretsId>2b012842-4195-410c-9a38-75057931abaa</UserSecretsId>
+        <DockerfileContext>..\..</DockerfileContext>
+        <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+      <ProjectReference Include="..\..\LibComponents\Lib.Scheduler\Lib.Scheduler.csproj" />
+      <ProjectReference Include="..\..\LibComponents\Lib.Service\Lib.Service.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\LibComponents\Lib.Service\Lib.Service.csproj" />
+      <Folder Include="Extensions\" />
     </ItemGroup>
 
 </Project>

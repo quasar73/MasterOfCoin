@@ -101,7 +101,8 @@ public class ServiceBuilder
     
     internal WebApplication InitWebApp()
     {
-        builder.ConfigureBuilder(serviceName, isLocalDevelopment, configureSwagger, migrationsAssembly, controllersAssembly, out var mvcBuilder);
+        builder.ConfigureBuilder(serviceName, isLocalDevelopment, configureSwagger, migrationsAssembly,
+            controllersAssembly, out var mvcBuilder, out var connectionString);
 
         configureMvc?.Invoke(mvcBuilder);
 
