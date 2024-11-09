@@ -27,6 +27,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Lib.Db\Lib.Db.csproj" />
       <ProjectReference Include="..\Lib.EventTracing\Lib.EventTracing.csproj" />
+      <ProjectReference Include="..\Lib.Logger\Lib.Logger.csproj" />
       <ProjectReference Include="..\Lib.Scheduler\Lib.Scheduler.csproj" />
     </ItemGroup>
 

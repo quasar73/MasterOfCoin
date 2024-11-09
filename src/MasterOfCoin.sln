@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.EventTracing", "LibComp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "docker-compose", "docker-compose\docker-compose.dcproj", "{3C2FBC9A-F27C-4F30-8F14-43D0D04C8E3A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.Logger", "LibComponents\Lib.Logger\Lib.Logger.csproj", "{41031805-0380-46C7-AB10-FAACC877FE0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{3C2FBC9A-F27C-4F30-8F14-43D0D04C8E3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C2FBC9A-F27C-4F30-8F14-43D0D04C8E3A}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{3C2FBC9A-F27C-4F30-8F14-43D0D04C8E3A}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{41031805-0380-46C7-AB10-FAACC877FE0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41031805-0380-46C7-AB10-FAACC877FE0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41031805-0380-46C7-AB10-FAACC877FE0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41031805-0380-46C7-AB10-FAACC877FE0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,5 +62,6 @@ Global
 		{02EE83CE-B878-494E-BD70-015BBD67036B} = {2A7C2854-7E8B-44A9-85E5-A73ECF60A716}
 		{03027B52-F38B-47C7-9899-0338911150F2} = {2A7C2854-7E8B-44A9-85E5-A73ECF60A716}
 		{21537F95-96B1-4C0C-AC6F-38E4499F6BD7} = {2A7C2854-7E8B-44A9-85E5-A73ECF60A716}
+		{41031805-0380-46C7-AB10-FAACC877FE0C} = {2A7C2854-7E8B-44A9-85E5-A73ECF60A716}
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Lib.Logger.Extensions;
 using Lib.Service.Extensions;
 using Lib.Service.Migrations.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -119,7 +120,7 @@ public class ServiceBuilder
             catch (Exception ex)
             {
                 var logger = app.Services.GetRequiredService<ILogger<ServiceBuilder>>();
-                // logger.Error("Application was stopped because of exception in migration", default, ex);
+                logger.Error("Application was stopped because of exception in migration", default, ex);
                 await app.StopAsync();
             }
         });

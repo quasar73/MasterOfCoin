@@ -2,6 +2,7 @@
 using Hangfire;
 using Lib.Db.Extensions;
 using Lib.EventTracing.Extensions;
+using Lib.Logger.Extensions;
 using Lib.Scheduler.Extensions;
 using Lib.Service.Settings;
 using Lib.Service.Trace;
@@ -33,7 +34,7 @@ public static class WebApplicationExtensions
         
         var hcBuilder = builder.Services.AddHealthChecks().AddOpenApiDocument();
 
-        // builder.WebHost.AddLogging(version, isLocalDevelopment, loggerSettings.Level);
+        builder.WebHost.AddLogging(isLocalDevelopment, loggerSettings.Level);
 
         TryAddDatabase(builder, connectionStrings, hcBuilder, migrationsAssembly);
         
@@ -124,10 +125,12 @@ public static class WebApplicationExtensions
 
         configureWebApplication?.ForEach(c => c.Invoke(app));
 
+#pragma warning disable ASP0014
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
         });
+#pragma warning restore ASP0014
         app.UseSwagger();
         app.UseSwaggerUI(c =>
             {
