@@ -9,10 +9,7 @@ public class ConnectionStrings
     public string? MessageBrokerUri { get; set; }
     public string? DistributedLockUri { get; set; }
     public string? TracingUri { get; set; }
-    public string? ErrorTrackingUri { get; set; }
     public string? SchedulerUri { get; set; }
     public string? SchedulerMasterUri { get; set; }
     public string? GrpcGatewayUri { get; set; }
-    public string? DataLakeUri { get; set; }
-    public string? DataLakeMasterUri { get; set; }
 }

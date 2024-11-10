@@ -25,7 +25,7 @@ public static class ServiceCollectionExtensions
         services
             .AddSingleton<IDataSourceHolder, DataSourceHolder>()
             .AddSingleton<IDatabaseFactory, PostgreDbFactory>()
-            .AddTransient(sp =>sp.GetRequiredService<IDatabaseFactory>().Create(connectionString));
+            .AddTransient(sp => sp.GetRequiredService<IDatabaseFactory>().Create(connectionString));
 
         if (migrationsAssembly != default)
         {

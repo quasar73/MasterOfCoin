@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.8'
 
 services:
   masterofcoin.api:
@@ -10,11 +10,58 @@ services:
       ENV_NAME: local
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 80
+      AuthenticationOptions__ValidateIssuer: false
+      AuthenticationOptions__ValidateAudience: false
+      AuthenticationOptions__ValidateLifetime: true
+      AuthenticationOptions__ValidateIssuerSigningKey: true
+      AuthenticationOptions__ValidIssuer: ""
+      AuthenticationOptions__JwtKey: "gMOpMcJXceejAKIYtpAviTu3Jp5EF7F8"
+      AuthenticationOptions__ExpireTimeMinutes: 60
+      ConnectionStrings__DbUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=masterofcoin_db;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
+      ConnectionStrings__DbMasterUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=postgres;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
       ConnectionStrings__TracingUri: "http://jaeger:14268/api/traces"
     ports:
       - "1234:80"
+    networks:
+      - master-of-coin
+  
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: "1"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "postgres"
+    ports:
+      - 25432:5432
+    networks:
+      - master-of-coin
+      
+  minio:
+    image: docker.io/bitnami/minio:2022
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    networks:
+      -  master-of-coin
+    volumes:
+      - 'minio-data:/data'
+    environment:
+      - MINIO_ROOT_USER=minio
+      - MINIO_ROOT_PASSWORD=1
+      - MINIO_DEFAULT_BUCKETS=master_of_coin_bucket
   
   jaeger:
     image: jaegertracing/all-in-one:latest
     ports:
       - "26687:16686"
+        
+volumes:
+  minio-data:
+    driver: local  
+      
+networks:
+  master-of-coin:
+    name: master-of-coin-network
+    external: false
+    driver: bridge

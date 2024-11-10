@@ -2,6 +2,7 @@
 using Lib.Logger.Extensions;
 using Lib.Service.Extensions;
 using Lib.Service.Migrations.Interfaces;
+using Lib.Service.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,7 @@ public class ServiceBuilder
     internal readonly WebApplicationBuilder builder;
     internal readonly string serviceName;
     internal readonly bool isLocalDevelopment;
-    // internal Action<ConnectionStrings>? configureConnectionStrings;
+    internal Action<ConnectionStrings>? configureConnectionStrings;
     internal List<Action<WebApplication>>? configureWebApplication;
     internal Action<IMvcBuilder>? configureMvc;
     internal Action<SwaggerGenOptions>? configureSwagger;
@@ -85,6 +86,12 @@ public class ServiceBuilder
         return this;
     }
     
+    public ServiceBuilder AddConnectionStrings(Action<ConnectionStrings> configure)
+    {
+        configureConnectionStrings = configure;
+        return this;
+    }
+    
     public ServiceBuilder ConfigureWebApp(Action<WebApplication> configure)
     {
         configureWebApplication ??= [];
@@ -102,7 +109,7 @@ public class ServiceBuilder
     
     internal WebApplication InitWebApp()
     {
-        builder.ConfigureBuilder(serviceName, isLocalDevelopment, configureSwagger, migrationsAssembly,
+        builder.ConfigureBuilder(serviceName, isLocalDevelopment, configureConnectionStrings, configureSwagger, migrationsAssembly,
             controllersAssembly, out var mvcBuilder, out var connectionString);
 
         configureMvc?.Invoke(mvcBuilder);

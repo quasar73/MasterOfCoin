@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics;
 using Lib.Logger.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MasterOfCoin.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("test")]
 public class TestController(ILogger _logger) : Controller

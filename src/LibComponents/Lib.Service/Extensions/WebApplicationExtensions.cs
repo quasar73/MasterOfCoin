@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Hangfire;
 using Lib.Db.Extensions;
 using Lib.EventTracing.Extensions;
 using Lib.Logger.Extensions;
@@ -20,17 +19,32 @@ namespace Lib.Service.Extensions;
 public static class WebApplicationExtensions
 {
     public static void ConfigureBuilder(this WebApplicationBuilder builder, string serviceName, bool isLocalDevelopment,
-        Action<SwaggerGenOptions>? configureSwagger, Assembly? migrationsAssembly, Assembly? controllersAssembly, 
+        Action<ConnectionStrings>? configureConnectionStrings, Action<SwaggerGenOptions>? configureSwagger, Assembly? migrationsAssembly, Assembly? controllersAssembly, 
         out IMvcBuilder mvcBuilder, out ConnectionStrings connectionStrings)
     {
         connectionStrings = new ConnectionStrings();
         var csSection = builder.Configuration.GetSection(nameof(ConnectionStrings)); 
+        
+        csSection.Bind(connectionStrings);
+        builder.Services.Configure<ConnectionStrings>(csSection);
+
+        if (configureConnectionStrings != null)
+        {
+            configureConnectionStrings.Invoke(connectionStrings);
+            builder.Services.Configure(configureConnectionStrings);
+        }
         
         var loggerSettings = new Settings.Logger();
         var loggerSection = builder.Configuration.GetSection(nameof(Settings.Logger));
 
         loggerSection.Bind(loggerSettings);
         builder.Services.Configure<Settings.Logger>(loggerSection);
+        
+        var schedulerSettings = new Settings.Scheduler();
+        var schedulerSection = builder.Configuration.GetSection(nameof(Settings.Scheduler));
+
+        schedulerSection.Bind(schedulerSettings);
+        builder.Services.Configure<Settings.Scheduler>(schedulerSection);
         
         var hcBuilder = builder.Services.AddHealthChecks().AddOpenApiDocument();
 
@@ -103,6 +117,29 @@ public static class WebApplicationExtensions
 
                 options.SupportNonNullableReferenceTypes();
                 configureSwagger?.Invoke(options);
+                
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
             })
             .AddSignalR();
     }
