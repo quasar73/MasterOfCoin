@@ -1,3 +1,3 @@
-﻿namespace MasterOfCoin.API.ApiContracts;
+﻿namespace MasterOfCoin.API.ApiContracts.Auth;
 
 public record LoginRequest(string Username, string Password);

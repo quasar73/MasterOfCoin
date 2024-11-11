@@ -11,6 +11,7 @@ public class AddUserTable : ForwardOnlyMigration
             .WithColumn("id").AsGuid().PrimaryKey()
             .WithColumn("username").AsString(128).NotNullable().Unique()
             .WithColumn("password_hash").AsString().NotNullable()
+            .WithColumn("password_salt").AsBinary(16).NotNullable()
             .WithColumn("email").AsString().NotNullable()
             .WithColumn("avatar").AsString().Nullable()
             .WithColumn("displayed_name").AsString().NotNullable();

@@ -3,7 +3,8 @@
 public record UserInDb(
     Guid Id, 
     string Username, 
-    string PasswordHash, 
+    string PasswordHash,
+    byte[] PasswordSalt,
     string Email, 
     string? Avatar, 
     string DisplayedName);
