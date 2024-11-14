@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Base.Cache.Contracts;
 using MasterOfCoin.API.Data.Interfaces;
 using MasterOfCoin.API.Data.Repositories;
 using MasterOfCoin.API.Options;
@@ -11,6 +13,8 @@ namespace MasterOfCoin.API.Extensions;
 
 public static class ServiceCollectionExtensions
 {
+    private const string DefaultJwtKey = nameof(DefaultJwtKey);
+    
     public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
         return services
@@ -30,6 +34,27 @@ public static class ServiceCollectionExtensions
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
+                options.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = async context =>
+                    {
+                        var cache = context.HttpContext.RequestServices.GetRequiredService<ICacheStore>();
+                        
+                        if (!context.Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
+                        {
+                            return;
+                        }
+        
+                        var token = authorizationHeader.ToString().Replace("Bearer ", "", StringComparison.OrdinalIgnoreCase);
+                        
+                        if (!(string.IsNullOrEmpty(token) || string.IsNullOrEmpty(await cache.GetAsync(token))))
+                        {
+                            context.Fail("Token is invalid.");
+                            Console.WriteLine(token);
+                        }
+                    }
+                };
+                
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = authOptions.ValidateIssuer,
@@ -38,7 +63,7 @@ public static class ServiceCollectionExtensions
                     ValidateIssuerSigningKey = authOptions.ValidateIssuerSigningKey,
                     ValidIssuer = authOptions.ValidIssuer,
                     ValidAudience = authOptions.ValidIssuer,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authOptions.JwtKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authOptions.JwtKey ?? DefaultJwtKey))
                 };
             });
 

@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Globalization;
+using System.Reflection;
+using Lib.Cache.Extensions;
 using Lib.Db.Extensions;
 using Lib.EventTracing.Extensions;
 using Lib.Logger.Extensions;
@@ -8,6 +10,7 @@ using Lib.Service.Trace;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Npgsql;
@@ -52,6 +55,22 @@ public static class WebApplicationExtensions
 
         TryAddDatabase(builder, connectionStrings, hcBuilder, migrationsAssembly);
         
+        if (!string.IsNullOrWhiteSpace(connectionStrings.CacheUri))
+        {
+            var shouldUseHeartbeatConsistencyChecks  = TimeSpan.TryParse(Environment.GetEnvironmentVariable("REDIS_HEARTBEAT_INTERVAL"), CultureInfo.InvariantCulture, out var heartbeatInterval);
+            var redisPoolSize  = int.TryParse(Environment.GetEnvironmentVariable("REDIS_CONNECTION_POOL_SIZE"), out var value) ? value : 1;
+            builder.Services.AddCacheStore(connectionStrings.CacheUri, redisPoolSize, (sp, redisOptions) =>
+            {
+                redisOptions.LoggerFactory = sp.GetService<ILoggerFactory>();
+                if (shouldUseHeartbeatConsistencyChecks)
+                {
+                    // this option more suitable for "streaming" connections. Allows always sending keepalive checks even if a connection isn’t idle.
+                    redisOptions.HeartbeatConsistencyChecks = true;
+                    redisOptions.HeartbeatInterval = heartbeatInterval;
+                }
+            });
+        }
+        
         if (!string.IsNullOrWhiteSpace(connectionStrings.TracingUri))
         {
             var probability = double.TryParse(Environment.GetEnvironmentVariable("TRACING_VOLUME"), out var volume) ? volume : 0.1; 
@@ -67,16 +86,16 @@ public static class WebApplicationExtensions
                     bldr.AddDatabaseTelemetry();
                 }
                 
+                // if (!string.IsNullOrWhiteSpace(cs.CacheUri))
+                // {
+                //     bldr.AddCacheTelemetry();
+                // }
+                
                 if (!string.IsNullOrWhiteSpace(cs.SchedulerUri))
                 {
                     bldr.AddSchedulerTelemetry();
                 }
                 
-                // if (!string.IsNullOrWhiteSpace(cs.CacheUri))
-                // {
-                //     bldr.AddCacheTelemetry();
-                // }
-                //
                 // if (!string.IsNullOrWhiteSpace(cs.MessageBrokerUri))
                 // {
                 //     bldr.AddMessageBrokerTelemetry();
