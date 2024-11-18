@@ -22,4 +22,9 @@ public class UserRepository(IDatabase _database) : IUserRepository
     public Task Create(UserInDb userInDb) => _database.Execute(
         "INSERT INTO users (id, username, password_hash, password_salt, displayed_name, email, avatar) " +
         "VALUES(@Id, @Username, @PasswordHash, @PasswordSalt, @DisplayedName, @Email, @Avatar)", userInDb);
+
+    public async Task<UserInDb?> GetById(Guid id)
+    {
+        return await _database.GetOrDefault<UserInDb>("SELECT * FROM users WHERE id = @id", new { id });
+    }
 }

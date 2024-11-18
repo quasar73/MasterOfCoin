@@ -9,42 +9,55 @@ namespace MasterOfCoin.API.Controllers;
 [ApiController]
 [AllowAnonymous]
 [Route("api/[controller]")]
-public class AuthController(IUserService _userService) : Controller
+public class AuthController(IAuthService _authService, IContractMapper _mapper) : Controller
 {
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var state = await _userService.Authorize(request.Username, request.Password);
+        var state = await _authService.Authorize(request.Username, request.Password);
+
+        return await HandleLoginState(state);
+    }
+    
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    {
+        var registerStatus = await _authService.Register(_mapper.ToRegisterInfo(request));
+
+        if (registerStatus == RegisterStatus.Unregister)
+        {
+            return BadRequest("User is not registered.");
+        }
+        
+        var state = await _authService.Authorize(request.Username, request.Password);
 
         switch (state.Status)
         {
             case LoginStatus.Success:
-                return Ok(new LoginResponse(state.Token));
-            case LoginStatus.Unauthorized:
-                return Unauthorized("Incorrect username or password.");
+                return Ok(_mapper.ToLoginResponse(state));
             default:
                 return BadRequest("Something went wrong.");
         }
     }
     
-    [HttpPost("registerAndLogin")]
-    public async Task<IActionResult> RegisterAndLogin([FromBody] RegisterRequest request)
+    [HttpGet("refresh")]
+    public async Task<IActionResult> Refresh([FromQuery] string refreshToken)
     {
-        var registerStatus = await _userService.Register(new(request.Username, request.Password, request.DisplayedName, request.Email));
+        var state = await _authService.Refresh(refreshToken);
 
-        if (registerStatus == RegisterStatus.Unregister)
-        {
-            return BadRequest("Not registered.");
-        }
-        
-        var state = await _userService.Authorize(request.Username, request.Password);
+        return await HandleLoginState(state);
+    }
 
+    private Task<IActionResult> HandleLoginState(LoginState state)
+    {
         switch (state.Status)
         {
             case LoginStatus.Success:
-                return Ok(new LoginResponse(state.Token));
+                return Task.FromResult<IActionResult>(Ok(_mapper.ToLoginResponse(state)));
+            case LoginStatus.Unauthorized:
+                return Task.FromResult<IActionResult>(Unauthorized("Incorrect username or password."));
             default:
-                return BadRequest("Something went wrong.");
+                return Task.FromResult<IActionResult>(BadRequest("Something went wrong."));
         }
     }
 }

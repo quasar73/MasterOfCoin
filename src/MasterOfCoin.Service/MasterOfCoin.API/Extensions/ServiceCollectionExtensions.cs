@@ -1,5 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Text;
+﻿using System.Text;
 using Base.Cache.Contracts;
 using MasterOfCoin.API.Data.Interfaces;
 using MasterOfCoin.API.Data.Repositories;
@@ -19,8 +18,9 @@ public static class ServiceCollectionExtensions
     {
         return services
             .AddAuthentication(configuration)
-            .AddScoped<IUserService, UserService>()
+            .AddScoped<IAuthService, AuthService>()
             .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<IContractMapper, ContractMapper>()
             .AddScoped<ITokenGenerator, TokenGenerator>();
     }
 
@@ -47,7 +47,7 @@ public static class ServiceCollectionExtensions
         
                         var token = authorizationHeader.ToString().Replace("Bearer ", "", StringComparison.OrdinalIgnoreCase);
                         
-                        if (!(string.IsNullOrEmpty(token) || string.IsNullOrEmpty(await cache.GetAsync(token))))
+                        if (!(string.IsNullOrEmpty(token) || string.IsNullOrEmpty(await cache.GetAsync(token.ToInvalidTokenKey()))))
                         {
                             context.Fail("Token is invalid.");
                             Console.WriteLine(token);

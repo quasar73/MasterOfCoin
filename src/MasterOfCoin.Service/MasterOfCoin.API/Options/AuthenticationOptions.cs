@@ -9,4 +9,5 @@ public class AuthenticationOptions
     public string ValidIssuer { get; init; } = default!;
     public string? JwtKey { get; init; } = default!;
     public int? ExpireTimeMinutes { get; init; } = default!;
+    public int? RefreshTokenExpireTimeMinutes { get; init; } = default!;
 }

@@ -17,6 +17,7 @@ services:
       AuthenticationOptions__ValidIssuer: ""
       AuthenticationOptions__JwtKey: "gMOpMcJXceejAKIYtpAviTu3Jp5EF7F8"
       AuthenticationOptions__ExpireTimeMinutes: 60
+      AuthenticationOptions__RefreshTokenExpireTimeMinutes: 360
       ConnectionStrings__CacheUri: redis
       ConnectionStrings__DbUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=masterofcoin_db;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
       ConnectionStrings__DbMasterUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=postgres;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true

@@ -6,4 +6,5 @@ public interface IUserRepository
 {
     public Task<UserInDb?> AuthorizeInDb(string username, string password);
     public Task Create(UserInDb userInDb);
+    public Task<UserInDb?> GetById(Guid id);
 }

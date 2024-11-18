@@ -1,3 +1,3 @@
 ﻿namespace MasterOfCoin.API.ApiContracts.Auth;
 
-public record LoginResponse(string Token);
+public record LoginResponse(string Token, string RefreshToken);
