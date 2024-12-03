@@ -10,6 +10,7 @@ public class AddSpacesTable : ForwardOnlyMigration
         Create.Table("spaces")
             .WithColumn("id").AsGuid().PrimaryKey()
             .WithColumn("name").AsString().NotNullable()
-            .WithColumn("user_id").AsGuid().NotNullable();
+            .WithColumn("user_id").AsGuid().NotNullable()
+            .WithColumn("deleted").AsBoolean().NotNullable().WithDefaultValue(false);
     }
 }

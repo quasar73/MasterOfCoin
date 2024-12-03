@@ -59,14 +59,16 @@ public class AuthService : IAuthService
     {
         var salt = Guid.NewGuid().ToByteArray();
         var hash = info.Password.CalculatePasswordHash(salt);
-        var userInDb = new UserInDb(
-            Guid.NewGuid(),
-            info.Username,
-            hash,
-            salt,
-            info.Email,
-            null,
-            info.DisplayedName);
+        var userInDb = new UserInDb
+        {
+            Id = Guid.NewGuid(),
+            Username = info.Username,
+            PasswordHash = hash,
+            PasswordSalt = salt,
+            Email = info.Email,
+            Avatar = null,
+            DisplayedName = info.DisplayedName
+        };
         
         try
         {

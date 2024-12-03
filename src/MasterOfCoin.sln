@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.Logger", "LibComponents
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.Cache", "LibComponents\Lib.Cache\Lib.Cache.csproj", "{AB9B0854-2E10-4707-9F8F-F5DF4B0D0656}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.CrossService", "LibComponents\Lib.CrossService\Lib.CrossService.csproj", "{3DD0CE4A-9D9A-4CAB-A31D-18389D4441D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{AB9B0854-2E10-4707-9F8F-F5DF4B0D0656}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB9B0854-2E10-4707-9F8F-F5DF4B0D0656}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB9B0854-2E10-4707-9F8F-F5DF4B0D0656}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DD0CE4A-9D9A-4CAB-A31D-18389D4441D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DD0CE4A-9D9A-4CAB-A31D-18389D4441D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DD0CE4A-9D9A-4CAB-A31D-18389D4441D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DD0CE4A-9D9A-4CAB-A31D-18389D4441D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,5 +76,6 @@ Global
 		{21537F95-96B1-4C0C-AC6F-38E4499F6BD7} = {2A7C2854-7E8B-44A9-85E5-A73ECF60A716}
 		{41031805-0380-46C7-AB10-FAACC877FE0C} = {2A7C2854-7E8B-44A9-85E5-A73ECF60A716}
 		{AB9B0854-2E10-4707-9F8F-F5DF4B0D0656} = {2A7C2854-7E8B-44A9-85E5-A73ECF60A716}
+		{3DD0CE4A-9D9A-4CAB-A31D-18389D4441D3} = {2A7C2854-7E8B-44A9-85E5-A73ECF60A716}
 	EndGlobalSection
 EndGlobal
