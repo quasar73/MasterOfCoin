@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using Lib.Cache.Extensions;
+using Lib.CrossService.Extensions;
+using Lib.CrossService.Models;
 using Lib.Db.Extensions;
 using Lib.EventTracing.Extensions;
 using Lib.Logger.Extensions;
@@ -8,6 +10,7 @@ using Lib.Scheduler.Extensions;
 using Lib.Service.Settings;
 using Lib.Service.Trace;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -22,7 +25,8 @@ namespace Lib.Service.Extensions;
 public static class WebApplicationExtensions
 {
     public static void ConfigureBuilder(this WebApplicationBuilder builder, string serviceName, bool isLocalDevelopment,
-        Action<ConnectionStrings>? configureConnectionStrings, Action<SwaggerGenOptions>? configureSwagger, Assembly? migrationsAssembly, Assembly? controllersAssembly, 
+        Action<ConnectionStrings>? configureConnectionStrings, Action<SwaggerGenOptions>? configureSwagger, Assembly? migrationsAssembly, 
+        Assembly[] grpcServicesAssemblies, Assembly[] grpcClientsAssemblies, ServerConnectionSettings? grpcServerConnectionSettings, Assembly? controllersAssembly, 
         out IMvcBuilder mvcBuilder, out ConnectionStrings connectionStrings)
     {
         connectionStrings = new ConnectionStrings();
@@ -49,6 +53,14 @@ public static class WebApplicationExtensions
         schedulerSection.Bind(schedulerSettings);
         builder.Services.Configure<Settings.Scheduler>(schedulerSection);
         
+        var grpcConnectionSettings = grpcServerConnectionSettings;
+        if (grpcServerConnectionSettings == null)
+        {
+            var grpcConnectionSection = builder.Configuration.GetSection(nameof(ServerConnectionSettings));
+            grpcConnectionSettings = new ServerConnectionSettings();
+            grpcConnectionSection.Bind(grpcConnectionSettings);
+        }
+        
         var hcBuilder = builder.Services.AddHealthChecks().AddOpenApiDocument();
 
         builder.WebHost.AddLogging(isLocalDevelopment, loggerSettings.Level);
@@ -69,6 +81,16 @@ public static class WebApplicationExtensions
                     redisOptions.HeartbeatInterval = heartbeatInterval;
                 }
             });
+        }
+        
+        if (grpcServicesAssemblies.Length != 0)
+        {
+            builder.Services.AddGrpcServices(isLocalDevelopment, grpcServicesAssemblies);
+        }
+        
+        if (!string.IsNullOrWhiteSpace(connectionStrings.GrpcGatewayUri))
+        {
+            builder.Services.AddGrpcClients(connectionStrings.GrpcGatewayUri, grpcConnectionSettings!, grpcClientsAssemblies);
         }
         
         if (!string.IsNullOrWhiteSpace(connectionStrings.TracingUri))
@@ -163,21 +185,25 @@ public static class WebApplicationExtensions
             .AddSignalR();
     }
     
-    public static WebApplication ConfigureApp(this WebApplication app, bool isLocalDevelopment,
-        string serviceName, List<Action<WebApplication>>? configureWebApplication)
+    public static WebApplication ConfigureApp(this WebApplication app, Assembly[] grpcServicesAssemblies, 
+        bool isLocalDevelopment, string serviceName, List<Action<WebApplication>>? configureWebApplication)
     {
         if (isLocalDevelopment)
         {
             app.UseCors(cfg => cfg
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .AllowCredentials()
                 .AllowAnyOrigin()
                 .SetIsOriginAllowed(_ => true)
                 .SetIsOriginAllowedToAllowWildcardSubdomains());
         }
 
         app.UseRouting();
+        
+        if (grpcServicesAssemblies.Length != 0)
+        {
+            app.MapGrpcServices(isLocalDevelopment);
+        }
 
         configureWebApplication?.ForEach(c => c.Invoke(app));
 

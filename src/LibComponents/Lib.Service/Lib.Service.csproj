@@ -11,6 +11,10 @@
       <PackageReference Include="FluentMigrator.Runner" Version="6.2.0" />
       <PackageReference Include="FluentValidation" Version="11.10.0" />
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
+      <PackageReference Include="Grpc.Tools" Version="2.67.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="Hangfire.AspNetCore" Version="1.8.15" />
       <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
@@ -26,6 +30,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Lib.Cache\Lib.Cache.csproj" />
+      <ProjectReference Include="..\Lib.CrossService\Lib.CrossService.csproj" />
       <ProjectReference Include="..\Lib.Db\Lib.Db.csproj" />
       <ProjectReference Include="..\Lib.EventTracing\Lib.EventTracing.csproj" />
       <ProjectReference Include="..\Lib.Logger\Lib.Logger.csproj" />

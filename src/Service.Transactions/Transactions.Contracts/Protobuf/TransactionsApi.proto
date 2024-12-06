@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option csharp_namespace = "Transactions.Contracts.Protobuf";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "Protobuf/Messages/TransactionsApiTypes.proto";
+
+package Transactions.Contracts;
+
+service TransactionsApi {
+  rpc TestMethod (TestRequest) returns (TestResponse) {}
+}

@@ -5,9 +5,10 @@ services:
     image: ${DOCKER_REGISTRY-}masterofcoinapi
     build:
       context: ../
-      dockerfile: MasterOfCoin.Service/MasterOfCoin.API/Dockerfile
+      dockerfile: Service.MasterOfCoin/MasterOfCoin.API/Dockerfile
     environment:
       ENV_NAME: local
+      IsLocalDevelopment: true
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 80
       AuthenticationOptions__ValidateIssuer: false
@@ -22,8 +23,29 @@ services:
       ConnectionStrings__DbUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=masterofcoin_db;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
       ConnectionStrings__DbMasterUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=postgres;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
       ConnectionStrings__TracingUri: "http://jaeger:14268/api/traces"
+      LocalGrpc__TransactionsGatewayUri: transactionsapi:8080
     ports:
       - "1234:80"
+    networks:
+      - master-of-coin
+        
+  transactions.api:
+    image: ${DOCKER_REGISTRY-}transactionsapi
+    container_name: transactionsapi
+    build:
+      context: ../
+      dockerfile: Service.Transactions/Transactions.API/Dockerfile
+    environment:
+      ENV_NAME: local
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: 80
+#      ConnectionStrings__CacheUri: redis
+#      ConnectionStrings__DbUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=transactions_db;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
+#      ConnectionStrings__DbMasterUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=postgres;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
+      ConnectionStrings__TracingUri: "http://jaeger:14268/api/traces"
+    ports:
+      - "1235:80"
+      - 8080
     networks:
       - master-of-coin
   

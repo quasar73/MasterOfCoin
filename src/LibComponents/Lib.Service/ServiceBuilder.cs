@@ -1,9 +1,12 @@
 ﻿using System.Reflection;
+using Lib.CrossService.Models;
 using Lib.Logger.Extensions;
 using Lib.Service.Extensions;
 using Lib.Service.Migrations.Interfaces;
 using Lib.Service.Settings;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -22,11 +25,14 @@ public class ServiceBuilder
     internal Action<SwaggerGenOptions>? configureSwagger;
     internal Assembly? migrationsAssembly;
     internal Assembly? controllersAssembly;
+    internal Assembly[] grpcServicesAssemblies = [];
+    internal Assembly[] grpcClientsAssemblies = [];
+    internal ServerConnectionSettings? grpcConnectionSettings;
     // internal Assembly[] consumersAssemblies = [];
-    // internal Assembly[] grpcServicesAssemblies = [];
-    // internal Assembly[] grpcClientsAssemblies = [];
     // internal HashSet<string>? acceptableComponents = [];
-    // internal ServerConnectionSettings? grpcConnectionSettings;
+    
+    internal static int DefaultHttp1Port = 80;
+    internal static int DefaultHttp2Port = 8080;
     
     private ServiceBuilder(string serviceName, bool isLocalDevelopment)
     {
@@ -86,6 +92,37 @@ public class ServiceBuilder
         return this;
     }
     
+    public ServiceBuilder AddGrpcServices(params Assembly[] grpcServicesAssemblies)
+    {
+        this.grpcServicesAssemblies = grpcServicesAssemblies;
+        builder.WebHost.ConfigureKestrel(serverOptions =>
+        {
+            serverOptions.ListenAnyIP(DefaultHttp2Port, listenOptions =>
+            {
+                listenOptions.Protocols = HttpProtocols.Http2;
+            });
+            serverOptions.ListenAnyIP(DefaultHttp1Port, listenOptions =>
+            {
+                listenOptions.Protocols = HttpProtocols.Http1;
+            });
+        });
+
+        return this;
+    }
+
+    public ServiceBuilder AddGrpcClients(params Assembly[] grpcClientsAssemblies)
+    {
+        this.grpcClientsAssemblies = grpcClientsAssemblies;
+        return this;
+    }
+
+    public ServiceBuilder AddGrpcClients(ServerConnectionSettings grpcConnectionSettings, params Assembly[] grpcClientsAssemblies)
+    {
+        this.grpcConnectionSettings = grpcConnectionSettings;
+        this.grpcClientsAssemblies = grpcClientsAssemblies;
+        return this;
+    }
+    
     public ServiceBuilder AddConnectionStrings(Action<ConnectionStrings> configure)
     {
         configureConnectionStrings = configure;
@@ -110,13 +147,14 @@ public class ServiceBuilder
     internal WebApplication InitWebApp()
     {
         builder.ConfigureBuilder(serviceName, isLocalDevelopment, configureConnectionStrings, configureSwagger, migrationsAssembly,
-            controllersAssembly, out var mvcBuilder, out var connectionString);
+            grpcServicesAssemblies, grpcClientsAssemblies, grpcConnectionSettings, controllersAssembly, 
+            out var mvcBuilder, out var connectionString);
 
         configureMvc?.Invoke(mvcBuilder);
 
         var app = builder
             .Build()
-            .ConfigureApp(isLocalDevelopment, serviceName, configureWebApplication);
+            .ConfigureApp(grpcServicesAssemblies, isLocalDevelopment, serviceName, configureWebApplication);
 
         app.Lifetime.ApplicationStarted.Register(async () =>
         {

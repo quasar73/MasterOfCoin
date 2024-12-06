@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option csharp_namespace = "Transactions.Contracts.Protobuf.Messages";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/any.proto";
+
+package Transactions.Contracts;
+
+message TestResponse {
+  string Message = 1;
+}
+
+message TestRequest {
+  int32 Value = 1;
+}

@@ -13,6 +13,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\LibComponents\Lib.Scheduler\Lib.Scheduler.csproj" />
       <ProjectReference Include="..\..\LibComponents\Lib.Service\Lib.Service.csproj" />
+      <ProjectReference Include="..\..\Service.Transactions\Transactions.Contracts\Transactions.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>
