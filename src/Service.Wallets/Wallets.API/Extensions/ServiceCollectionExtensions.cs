@@ -1,9 +1,9 @@
-﻿using Transactions.API.Data.Interfaces;
-using Transactions.API.Data.Repositories;
-using Transactions.API.Services;
-using Transactions.Contracts.Interfaces;
+﻿using Wallets.API.Data.Interfaces;
+using Wallets.API.Data.Repositories;
+using Wallets.API.Services;
+using Wallets.Contracts.Interfaces;
 
-namespace Transactions.API.Extensions;
+namespace Wallets.API.Extensions;
 
 public static class ServiceCollectionExtensions
 {
@@ -19,12 +19,12 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddApi(this IServiceCollection services)
     {
         return services
-            .AddSingleton<ITransactionsApi, TransactionsApi>();
+            .AddSingleton<IWalletsApi, WalletsApi>();
     }
     
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         return services
-            .AddSingleton<IAccountRepository, AccountRepository>();
+            .AddSingleton<IWalletRepository, WalletRepository>();
     }
 }

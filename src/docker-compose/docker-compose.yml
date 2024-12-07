@@ -25,6 +25,7 @@ services:
       ConnectionStrings__TracingUri: "http://jaeger:14268/api/traces"
       ConnectionStrings__MessageBrokerUri: "amqp://guest:guest@rabbit:5672/"
       LocalGrpc__TransactionsGatewayUri: transactionsapi:8080
+      LocalGrpc__WalletsGatewayUri: walletsapi:8080
     ports:
       - "1234:80"
     networks:
@@ -40,13 +41,32 @@ services:
       ENV_NAME: local
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 80
-#      ConnectionStrings__CacheUri: redis
-#      ConnectionStrings__DbUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=transactions_db;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
-#      ConnectionStrings__DbMasterUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=postgres;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
+      ConnectionStrings__DbUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=transactions_db;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
+      ConnectionStrings__DbMasterUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=postgres;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
       ConnectionStrings__TracingUri: "http://jaeger:14268/api/traces"
       ConnectionStrings__MessageBrokerUri: "amqp://guest:guest@rabbit:5672/"
     ports:
       - "1235:80"
+      - 8080
+    networks:
+      - master-of-coin
+  
+  wallets.api:
+    image: ${DOCKER_REGISTRY-}walletssapi
+    container_name: walletsapi
+    build:
+      context: ../
+      dockerfile: Service.Wallets/Wallets.API/Dockerfile
+    environment:
+      ENV_NAME: local
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: 80
+      ConnectionStrings__DbUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=wallets_db;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
+      ConnectionStrings__DbMasterUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=postgres;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
+      ConnectionStrings__TracingUri: "http://jaeger:14268/api/traces"
+      ConnectionStrings__MessageBrokerUri: "amqp://guest:guest@rabbit:5672/"
+    ports:
+      - "1236:80"
       - 8080
     networks:
       - master-of-coin

@@ -14,8 +14,8 @@ public class SpaceController(ISpaceService _service, IContractMapper _mapper) : 
     public async Task<IActionResult> GetUserSpaces()
     {
         var username = HttpContext.User.Identity!.Name!;
+        
         var result = await _service.GetList(username);
-
         return Ok(_mapper.ToSpaceResponses(result));
     }
     
@@ -23,8 +23,8 @@ public class SpaceController(ISpaceService _service, IContractMapper _mapper) : 
     public async Task<IActionResult> CreateSpace([FromBody] CreateSpaceRequest request)
     {
         var username = HttpContext.User.Identity!.Name!;
-        var spaceInDb = await _service.CreateSpace(request.Name, username);
         
+        var spaceInDb = await _service.CreateSpace(request.Name, username);
         return Ok(_mapper.ToSpaceResponse(spaceInDb));
     }
     
@@ -32,8 +32,8 @@ public class SpaceController(ISpaceService _service, IContractMapper _mapper) : 
     public async Task<IActionResult> DeleteSpace([FromBody] DeleteSpaceRequest request)
     {
         var username = HttpContext.User.Identity!.Name!;
-        await _service.DeleteSpace(request.SpaceId, username);
         
+        await _service.DeleteSpace(request.SpaceId, username);
         return Ok();
     }
 }

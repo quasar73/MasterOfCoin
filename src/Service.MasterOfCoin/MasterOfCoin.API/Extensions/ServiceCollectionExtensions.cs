@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Transactions.Contracts.Interfaces;
 using Lib.CrossService.Extensions;
+using Wallets.Contracts.Interfaces;
 
 namespace MasterOfCoin.API.Extensions;
 
@@ -32,6 +33,7 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IAuthService, AuthService>()
             .AddSingleton<IContractMapper, ContractMapper>()
             .AddSingleton<ITokenGenerator, TokenGenerator>()
+            .AddSingleton<IValidationService, ValidationService>()
             .AddSingleton<ISpaceService, SpaceService>();
     }
     
@@ -96,12 +98,15 @@ public static class ServiceCollectionExtensions
         if (isLocal)
         {
             var transactionsGateway = Environment.GetEnvironmentVariable("LocalGrpc__TransactionsGatewayUri")!;
+            var walletsGateway = Environment.GetEnvironmentVariable("LocalGrpc__WalletsGatewayUri")!;
 
             services.AddGrpcClients(transactionsGateway, grpcSettings, typeof(ITransactionsApi).Assembly);
+            services.AddGrpcClients(walletsGateway, grpcSettings, typeof(IWalletsApi).Assembly);
         }
         else
         {
             services.AddGrpcClients(Environment.GetEnvironmentVariable("ConnectionStrings__GrpcGatewayUri")!, grpcSettings, typeof(ITransactionsApi).Assembly);
+            services.AddGrpcClients(Environment.GetEnvironmentVariable("ConnectionStrings__GrpcGatewayUri")!, grpcSettings, typeof(IWalletsApi).Assembly);
         }
 
         return services;

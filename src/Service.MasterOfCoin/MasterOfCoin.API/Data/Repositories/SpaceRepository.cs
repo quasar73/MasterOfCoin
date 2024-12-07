@@ -8,7 +8,7 @@ public class SpaceRepository(IDatabase _database) : ISpaceRepository
 {
     public Task Create(SpaceInDb spaceInDb) => _database.Execute(
         "INSERT INTO spaces (id, name, user_id, deleted) " +
-        "VALUES(@Id, @Name, @UserId, false)", spaceInDb);
+        "VALUES (@Id, @Name, @UserId, false)", spaceInDb);
 
     public Task MarkAsDeleted(Guid spaceId, Guid userId) =>
         _database.Execute("UPDATE spaces SET deleted = true WHERE id = @spaceId AND user_id = @userId", new { spaceId, userId });

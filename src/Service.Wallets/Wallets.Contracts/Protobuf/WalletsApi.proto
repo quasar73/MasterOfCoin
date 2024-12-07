@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Wallets.Contracts.Protobuf";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "Protobuf/Messages/WalletsApiTypes.proto";
+
+package Wallets.Contracts;
+
+service WalletsApi {
+  rpc CreateWallet (CreateWalletRequest) returns (CreateWalletResponse) {}
+}

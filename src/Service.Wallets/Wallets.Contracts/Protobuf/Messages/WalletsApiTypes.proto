@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Wallets.Contracts.Protobuf.Messages";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/any.proto";
+
+package Wallets.Contracts;
+
+message StatusCode {
+  string Status = 1;
+}
+
+message CreateWalletRequest {
+  string Name = 1;
+  string SpaceId = 2;
+  google.protobuf.Any InitialValue = 3;
+  string Currency = 4;
+  bool Cumulative = 5;
+}
+
+message CreateWalletResponse {
+  StatusCode StatusCode = 1;
+  string WalletId = 2;
+}
