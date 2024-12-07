@@ -1,6 +1,10 @@
-﻿namespace MasterOfCoin.API.Services.Interfaces;
+﻿using MasterOfCoin.API.Data.Models;
+
+namespace MasterOfCoin.API.Services.Interfaces;
 
 public interface ISpaceService
 {
-    Task CreateSpace(string name, Guid userId);
+    Task<SpaceInDb> CreateSpace(string name, string username);
+    Task DeleteSpace(Guid spaceId, string username);
+    Task<SpaceInDb[]> GetList(string username);
 }

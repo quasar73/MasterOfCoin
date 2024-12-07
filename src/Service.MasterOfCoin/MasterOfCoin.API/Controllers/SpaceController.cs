@@ -1,4 +1,5 @@
-﻿using MasterOfCoin.API.Services.Interfaces;
+﻿using MasterOfCoin.API.ApiContracts.Space;
+using MasterOfCoin.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,24 +8,32 @@ namespace MasterOfCoin.API.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/[controller]")]
-public class SpaceController() : Controller
+public class SpaceController(ISpaceService _service, IContractMapper _mapper) : Controller
 {
     [HttpGet("get-list")]
     public async Task<IActionResult> GetUserSpaces()
     {
-        return Ok("Get spaces");
+        var username = HttpContext.User.Identity!.Name!;
+        var result = await _service.GetList(username);
+
+        return Ok(_mapper.ToSpaceResponses(result));
     }
     
     [HttpPost("create")]
-    public async Task<IActionResult> CreateSpace()
+    public async Task<IActionResult> CreateSpace([FromBody] CreateSpaceRequest request)
     {
         var username = HttpContext.User.Identity!.Name!;
-        return Ok();
+        var spaceInDb = await _service.CreateSpace(request.Name, username);
+        
+        return Ok(_mapper.ToSpaceResponse(spaceInDb));
     }
     
-    [HttpGet("delete")]
-    public async Task<IActionResult> DeleteSpace()
+    [HttpPost("delete")]
+    public async Task<IActionResult> DeleteSpace([FromBody] DeleteSpaceRequest request)
     {
-        return Ok("Delete space");
+        var username = HttpContext.User.Identity!.Name!;
+        await _service.DeleteSpace(request.SpaceId, username);
+        
+        return Ok();
     }
 }

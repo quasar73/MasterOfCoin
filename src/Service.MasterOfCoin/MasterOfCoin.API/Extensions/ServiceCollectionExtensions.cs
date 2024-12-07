@@ -22,10 +22,24 @@ public static class ServiceCollectionExtensions
         return services
             .AddAuthentication(configuration)
             .AddGrpcClients(isLocal)
-            .AddScoped<IAuthService, AuthService>()
-            .AddScoped<IUserRepository, UserRepository>()
-            .AddScoped<IContractMapper, ContractMapper>()
-            .AddScoped<ITokenGenerator, TokenGenerator>();
+            .AddRepositories()
+            .AddCustomServices();
+    }
+
+    private static IServiceCollection AddCustomServices(this IServiceCollection services)
+    {
+        return services
+            .AddSingleton<IAuthService, AuthService>()
+            .AddSingleton<IContractMapper, ContractMapper>()
+            .AddSingleton<ITokenGenerator, TokenGenerator>()
+            .AddSingleton<ISpaceService, SpaceService>();
+    }
+    
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        return services
+            .AddSingleton<IUserRepository, UserRepository>()
+            .AddSingleton<ISpaceRepository, SpaceRepository>();
     }
 
     private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)

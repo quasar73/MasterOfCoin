@@ -23,8 +23,9 @@ public class UserRepository(IDatabase _database) : IUserRepository
         "INSERT INTO users (id, username, password_hash, password_salt, displayed_name, email, avatar) " +
         "VALUES(@Id, @Username, @PasswordHash, @PasswordSalt, @DisplayedName, @Email, @Avatar)", userInDb);
 
-    public async Task<UserInDb?> GetById(Guid id)
-    {
-        return await _database.GetOrDefault<UserInDb>("SELECT * FROM users WHERE id = @id", new { id });
-    }
+    public Task<UserInDb?> GetById(Guid id) =>
+        _database.GetOrDefault<UserInDb>("SELECT * FROM users WHERE id = @id", new { id });
+
+    public Task<UserInDb?> GetByUsername(string username) =>
+        _database.GetOrDefault<UserInDb>("SELECT * FROM users WHERE username = @username", new { username });
 }
