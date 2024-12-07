@@ -23,6 +23,7 @@ services:
       ConnectionStrings__DbUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=masterofcoin_db;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
       ConnectionStrings__DbMasterUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=postgres;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
       ConnectionStrings__TracingUri: "http://jaeger:14268/api/traces"
+      ConnectionStrings__MessageBrokerUri: "amqp://guest:guest@rabbit:5672/"
       LocalGrpc__TransactionsGatewayUri: transactionsapi:8080
     ports:
       - "1234:80"
@@ -43,6 +44,7 @@ services:
 #      ConnectionStrings__DbUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=transactions_db;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
 #      ConnectionStrings__DbMasterUri: User Id=postgres;Password=1;Server=postgres;Port=5432;Database=postgres;Pooling=true;Minimum Pool Size=1;Maximum Pool Size=5;SSL Mode=Allow;Include Error Detail=true
       ConnectionStrings__TracingUri: "http://jaeger:14268/api/traces"
+      ConnectionStrings__MessageBrokerUri: "amqp://guest:guest@rabbit:5672/"
     ports:
       - "1235:80"
       - 8080
@@ -87,6 +89,14 @@ services:
     image: redis:latest
     ports:
       - 26379:6379
+    networks:
+      - master-of-coin
+      
+  rabbit:
+    image: rabbitmq:management
+    restart: always
+    ports:
+      - 15672
     networks:
       - master-of-coin
         

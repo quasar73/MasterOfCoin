@@ -6,6 +6,7 @@ using Lib.CrossService.Models;
 using Lib.Db.Extensions;
 using Lib.EventTracing.Extensions;
 using Lib.Logger.Extensions;
+using Lib.MessageBroker.Extensions;
 using Lib.Scheduler.Extensions;
 using Lib.Service.Settings;
 using Lib.Service.Trace;
@@ -26,8 +27,8 @@ public static class WebApplicationExtensions
 {
     public static void ConfigureBuilder(this WebApplicationBuilder builder, string serviceName, bool isLocalDevelopment,
         Action<ConnectionStrings>? configureConnectionStrings, Action<SwaggerGenOptions>? configureSwagger, Assembly? migrationsAssembly, 
-        Assembly[] grpcServicesAssemblies, Assembly[] grpcClientsAssemblies, ServerConnectionSettings? grpcServerConnectionSettings, Assembly? controllersAssembly, 
-        out IMvcBuilder mvcBuilder, out ConnectionStrings connectionStrings)
+        Assembly[] grpcServicesAssemblies, Assembly[] consumersAssemblies, Assembly[] grpcClientsAssemblies, Assembly? controllersAssembly, ServerConnectionSettings? grpcServerConnectionSettings, 
+        out IMvcBuilder mvcBuilder, out ConnectionStrings connectionStrings, out Type[] consumers)
     {
         connectionStrings = new ConnectionStrings();
         var csSection = builder.Configuration.GetSection(nameof(ConnectionStrings)); 
@@ -81,6 +82,16 @@ public static class WebApplicationExtensions
                     redisOptions.HeartbeatInterval = heartbeatInterval;
                 }
             });
+        }
+        
+        if (!string.IsNullOrWhiteSpace(connectionStrings.MessageBrokerUri))
+        {
+            builder.Services.AddMessageBroker(serviceName, connectionStrings.MessageBrokerUri, out consumers, consumersAssemblies);
+            hcBuilder.AddMessageBrokerHealthCheck();
+        }
+        else
+        {
+            consumers = [];
         }
         
         if (grpcServicesAssemblies.Length != 0)
@@ -185,7 +196,7 @@ public static class WebApplicationExtensions
             .AddSignalR();
     }
     
-    public static WebApplication ConfigureApp(this WebApplication app, Assembly[] grpcServicesAssemblies, 
+    public static WebApplication ConfigureApp(this WebApplication app, Type[] consumers, Assembly[] grpcServicesAssemblies, 
         bool isLocalDevelopment, string serviceName, List<Action<WebApplication>>? configureWebApplication)
     {
         if (isLocalDevelopment)
@@ -199,6 +210,11 @@ public static class WebApplicationExtensions
         }
 
         app.UseRouting();
+        
+        if (consumers.Length != 0)
+        {
+            app.Services.RegisterConsumers(consumers);
+        }
         
         if (grpcServicesAssemblies.Length != 0)
         {

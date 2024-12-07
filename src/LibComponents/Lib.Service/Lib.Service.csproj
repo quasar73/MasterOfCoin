@@ -24,7 +24,7 @@
       <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.9.0" />
       <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.9.0" />
       <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.9.0" />
-      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="7.1.0" />
       <PackageReference Include="Swashbuckle.AspNetCore.HealthChecks" Version="0.1.0" />
     </ItemGroup>
 
@@ -34,6 +34,7 @@
       <ProjectReference Include="..\Lib.Db\Lib.Db.csproj" />
       <ProjectReference Include="..\Lib.EventTracing\Lib.EventTracing.csproj" />
       <ProjectReference Include="..\Lib.Logger\Lib.Logger.csproj" />
+      <ProjectReference Include="..\Lib.MessageBroker\Lib.MessageBroker.csproj" />
       <ProjectReference Include="..\Lib.Scheduler\Lib.Scheduler.csproj" />
     </ItemGroup>
 

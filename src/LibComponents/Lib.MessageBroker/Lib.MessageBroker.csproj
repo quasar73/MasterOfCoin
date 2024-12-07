@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.1" />
+      <PackageReference Include="Docker.DotNet" Version="3.125.15" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+      <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.0" />
+      <PackageReference Include="OpenTelemetry.Api" Version="1.9.0" />
+      <PackageReference Include="Polly" Version="8.5.0" />
+      <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
+      <PackageReference Include="Scrutor" Version="5.0.2" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="7.1.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore.HealthChecks" Version="0.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Lib.EventTracing\Lib.EventTracing.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -27,8 +27,8 @@ public class ServiceBuilder
     internal Assembly? controllersAssembly;
     internal Assembly[] grpcServicesAssemblies = [];
     internal Assembly[] grpcClientsAssemblies = [];
+    internal Assembly[] consumersAssemblies = [];
     internal ServerConnectionSettings? grpcConnectionSettings;
-    // internal Assembly[] consumersAssemblies = [];
     // internal HashSet<string>? acceptableComponents = [];
     
     internal static int DefaultHttp1Port = 80;
@@ -129,6 +129,12 @@ public class ServiceBuilder
         return this;
     }
     
+    public ServiceBuilder AddConsumers(params Assembly[] consumersAssemblies)
+    {
+        this.consumersAssemblies = consumersAssemblies;
+        return this;
+    }
+    
     public ServiceBuilder ConfigureWebApp(Action<WebApplication> configure)
     {
         configureWebApplication ??= [];
@@ -147,14 +153,14 @@ public class ServiceBuilder
     internal WebApplication InitWebApp()
     {
         builder.ConfigureBuilder(serviceName, isLocalDevelopment, configureConnectionStrings, configureSwagger, migrationsAssembly,
-            grpcServicesAssemblies, grpcClientsAssemblies, grpcConnectionSettings, controllersAssembly, 
-            out var mvcBuilder, out var connectionString);
+            grpcServicesAssemblies, consumersAssemblies, grpcClientsAssemblies, controllersAssembly, grpcConnectionSettings, 
+            out var mvcBuilder, out var connectionString, out var consumers);
 
         configureMvc?.Invoke(mvcBuilder);
 
         var app = builder
             .Build()
-            .ConfigureApp(grpcServicesAssemblies, isLocalDevelopment, serviceName, configureWebApplication);
+            .ConfigureApp(consumers, grpcServicesAssemblies, isLocalDevelopment, serviceName, configureWebApplication);
 
         app.Lifetime.ApplicationStarted.Register(async () =>
         {
