@@ -1,5 +1,5 @@
-﻿using Transactions.Contracts.Messages;
-using Transactions.Contracts.Messages.Accounts;
+﻿using Transactions.Contracts.Messages.Accounts;
+using Transactions.Contracts.Messages.Accounts.Enums;
 using Wallets.API.Data.Models;
 using Wallets.API.Services.Interfaces;
 using Wallets.Contracts.Contracts;

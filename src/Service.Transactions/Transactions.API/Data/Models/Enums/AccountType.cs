@@ -4,4 +4,5 @@ public enum AccountType
 {
     None = 0,
     Wallet = 1,
+    Category = 1,
 }

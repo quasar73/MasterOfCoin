@@ -1,0 +1,16 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Categories.Contracts.Protobuf";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "Protobuf/Messages/CategoriesApiTypes.proto";
+
+package Categories.Contracts;
+
+service CategoriesApi {
+  rpc CreateCategory(CreateCategoryRequest) returns (CreateCategoryResponse) {}
+  rpc EditCategory(EditCategoryRequest) returns (StatusResponse) {}
+  rpc GetCategories(GetCategoriesRequest) returns (CategoriesListResponse) {}
+  rpc GetCategory(GetCategoryRequest) returns (GetCategoryResponse) {}
+}

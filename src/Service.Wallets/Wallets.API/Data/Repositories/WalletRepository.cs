@@ -6,11 +6,11 @@ namespace Wallets.API.Data.Repositories;
 
 public class WalletRepository(IDatabase _database) : IWalletRepository
 {
-    public Task<int> CreateWallet(WalletInDb walletInDb) => _database.Execute(
+    public Task<int> Create(WalletInDb walletInDb) => _database.Execute(
         "INSERT INTO wallets(id, name, currency, value, cumulative, space_id, account_id, archived)" +
         "VALUES (@Id, @Name, @Currency, @Value, @Cumulative, @SpaceId, @AccountId, @Archived)", walletInDb);
 
-    public Task<int> EditWallet(WalletInDb walletInDb) => _database.Execute(
+    public Task<int> Update(WalletInDb walletInDb) => _database.Execute(
         "UPDATE wallets SET name = @Name, currency = @Currency, cumulative = @Cumulative, value = @Value, archived = @Archived", walletInDb);
 
     public Task<WalletInDb> Find(Guid walletId, Guid spaceId) =>

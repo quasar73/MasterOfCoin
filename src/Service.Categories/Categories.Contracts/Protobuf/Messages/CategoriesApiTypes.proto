@@ -1,0 +1,69 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Categories.Contracts.Protobuf.Messages";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/any.proto";
+
+package Categories.Contracts;
+
+enum RequestStatus {
+  Success = 0;
+  NotFound = 1;
+  InvalidData = 2;
+  InvalidParent = 3;
+}
+
+message StatusResponse {
+  RequestStatus Status = 1;
+}
+
+message CreateCategoryRequest {
+  string Name = 1;
+  google.protobuf.StringValue ParentId = 2;
+  google.protobuf.StringValue Color = 3;
+  google.protobuf.StringValue Icon = 4;
+  string SpaceId = 5;
+}
+
+message EditCategoryRequest {
+  string Id = 1;
+  google.protobuf.StringValue Name = 2;
+  google.protobuf.StringValue ParentId = 3;
+  google.protobuf.StringValue Color = 4;
+  google.protobuf.StringValue Icon = 5;
+  string SpaceId = 6;
+}
+
+message GetCategoriesRequest {
+  string SpaceId = 1;
+}
+
+message GetCategoryRequest {
+  string Id = 1;
+  string SpaceId = 2;
+}
+
+message CreateCategoryResponse {
+  RequestStatus Status = 1;
+  google.protobuf.StringValue CategoryId = 2;
+}
+
+message CategoryResponse {
+  string Id = 1;
+  string Name = 2;
+  google.protobuf.StringValue ParentId = 3;
+  google.protobuf.StringValue Color = 4;
+  google.protobuf.StringValue Icon = 5;
+  string SpaceId = 6;
+}
+
+message CategoriesListResponse {
+  RequestStatus Status = 1;
+  repeated CategoryResponse Categories = 2;
+}
+
+message GetCategoryResponse {
+  RequestStatus Status = 1;
+  CategoryResponse Category = 2;
+}

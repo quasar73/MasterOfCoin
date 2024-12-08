@@ -1,4 +1,6 @@
-﻿using MasterOfCoin.API.ApiContracts.Auth;
+﻿using Categories.Contracts.Contracts;
+using MasterOfCoin.API.ApiContracts.Auth;
+using MasterOfCoin.API.ApiContracts.Category;
 using MasterOfCoin.API.ApiContracts.Space;
 using MasterOfCoin.API.ApiContracts.Wallet;
 using MasterOfCoin.API.Data.Models;
@@ -22,7 +24,22 @@ public class ContractMapper : IContractMapper
         request.Value,
         request.Cumulative,
         spaceId);
-    
+
+    public CreateCategoryRequest ToCreateCategoryRequest(CreateCategoryApiRequest request, Guid spaceId) => new(
+        request.Name,
+        request.ParentId,
+        request.Color,
+        request.Icon,
+        spaceId);
+
+    public EditCategoryRequest ToEditCategoryRequest(EditCategoryApiRequest request, Guid spaceId) => new(
+        request.Id,
+        request.Name,
+        request.ParentId,
+        request.Color,
+        request.Icon,
+        spaceId);
+
     // To Api Contracts
     public LoginResponse ToLoginResponse(LoginState state) => new(state.Token, state.RefreshToken);
     public SpaceResponse ToSpaceResponse(SpaceInDb space) => new(space.Id, space.Name);
@@ -45,4 +62,23 @@ public class ContractMapper : IContractMapper
 
     public GetWalletsApiResponse ToGetWalletsApiResponse(WalletsListResponse response) =>
         new(response.Wallets.Select(ToWalletApiResponse).ToArray());
+
+    public CreateCategoryApiResponse ToCreateCategoryApiResponse(CreateCategoryResponse response,
+        CreateCategoryRequest request) => new(
+        response.CategoryId!.Value,
+        request.Name,
+        request.ParentId,
+        request.Color,
+        request.Icon);
+
+    public CategoryApiResponse ToCategoryApiResponse(CategoryResponse response) => new(
+        response.Id,
+        response.Name,
+        response.ParentId,
+        response.Color,
+        response.Icon,
+        response.SpaceId);
+
+    public GetCategoriesApiResponse ToGetCategoriesApiResponse(CategoryResponse[] responses) =>
+        new(responses.Select(ToCategoryApiResponse).ToArray());
 }

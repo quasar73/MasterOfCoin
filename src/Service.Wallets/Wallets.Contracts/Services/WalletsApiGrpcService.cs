@@ -5,7 +5,7 @@ using Wallets.Contracts.Protobuf;
 
 namespace Wallets.Contracts.Services;
 
-public class WalletsApiGrpcService: WalletsApi.WalletsApiBase, IGrpcService<IWalletsApi>
+public class WalletsApiGrpcService : WalletsApi.WalletsApiBase, IGrpcService<IWalletsApi>
 {
     private WalletsApiGrpcService() { }
     

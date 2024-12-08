@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Base.Cache.Contracts;
+using Categories.Contracts.Interfaces;
 using Lib.CrossService.Models;
 using MasterOfCoin.API.Data.Interfaces;
 using MasterOfCoin.API.Data.Repositories;
@@ -99,14 +100,17 @@ public static class ServiceCollectionExtensions
         {
             var transactionsGateway = Environment.GetEnvironmentVariable("LocalGrpc__TransactionsGatewayUri")!;
             var walletsGateway = Environment.GetEnvironmentVariable("LocalGrpc__WalletsGatewayUri")!;
+            var categoriesGateway = Environment.GetEnvironmentVariable("LocalGrpc__CategoriesGatewayUri")!;
 
             services.AddGrpcClients(transactionsGateway, grpcSettings, typeof(ITransactionsApi).Assembly);
             services.AddGrpcClients(walletsGateway, grpcSettings, typeof(IWalletsApi).Assembly);
+            services.AddGrpcClients(categoriesGateway, grpcSettings, typeof(ICategoriesApi).Assembly);
         }
         else
         {
             services.AddGrpcClients(Environment.GetEnvironmentVariable("ConnectionStrings__GrpcGatewayUri")!, grpcSettings, typeof(ITransactionsApi).Assembly);
             services.AddGrpcClients(Environment.GetEnvironmentVariable("ConnectionStrings__GrpcGatewayUri")!, grpcSettings, typeof(IWalletsApi).Assembly);
+            services.AddGrpcClients(Environment.GetEnvironmentVariable("LocalGrpc__CategoriesGatewayUri")!, grpcSettings, typeof(ICategoriesApi).Assembly);
         }
 
         return services;

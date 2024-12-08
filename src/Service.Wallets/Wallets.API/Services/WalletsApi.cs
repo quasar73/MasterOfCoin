@@ -26,7 +26,7 @@ public class WalletsApi(
             AccountId = Guid.NewGuid(),
             Archived = false
         };
-        var affectedRows = await _repository.CreateWallet(walletInDb);
+        var affectedRows = await _repository.Create(walletInDb);
 
         if (affectedRows != 1) return new(RequestStatus.InvalidData, default);
         
@@ -46,7 +46,7 @@ public class WalletsApi(
         walletInDb.Currency = request.Currency ?? walletInDb.Currency;
         walletInDb.Cumulative = request.Cumulative ?? walletInDb.Cumulative;
         
-        var affectedRows = await _repository.EditWallet(walletInDb);
+        var affectedRows = await _repository.Update(walletInDb);
 
         if (affectedRows != 1) return new(RequestStatus.InvalidData);
         
@@ -61,7 +61,7 @@ public class WalletsApi(
         
         walletInDb.Archived = true;
         
-        var affectedRows = await _repository.EditWallet(walletInDb);
+        var affectedRows = await _repository.Update(walletInDb);
 
         if (affectedRows != 1) return new(RequestStatus.InvalidData);
         
