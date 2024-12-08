@@ -10,4 +10,8 @@ package Wallets.Contracts;
 
 service WalletsApi {
   rpc CreateWallet (CreateWalletRequest) returns (CreateWalletResponse) {}
+  rpc EditWallet (EditWalletRequest) returns (StatusResponse) {}
+  rpc ArchiveWallet (ArchiveWalletRequest) returns (StatusResponse) {}
+  rpc GetWallets (GetWalletsRequest) returns (WalletsListResponse) {}
+  rpc GetWallet (GetWalletRequest) returns (GetWalletResponse) {}
 }

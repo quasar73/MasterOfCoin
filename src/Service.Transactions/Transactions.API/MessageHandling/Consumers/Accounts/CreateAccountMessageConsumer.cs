@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Transactions.API.Data.Interfaces;
 using Transactions.API.Data.Models;
+using Transactions.API.Extensions;
 using Transactions.Contracts.Messages.Accounts;
 
 namespace Transactions.API.MessageHandling.Consumers.Accounts;
@@ -29,8 +30,8 @@ public class CreateAccountMessageConsumer(
         var accountInDb = new AccountInDb
         {
             Id = message.Id,
-            Name = message.Name,
-            SpaceId = message.SpaceId
+            SpaceId = message.SpaceId,
+            Type = message.Source.ToAccountType()
         };
 
         return _repository.CreateAccount(accountInDb);

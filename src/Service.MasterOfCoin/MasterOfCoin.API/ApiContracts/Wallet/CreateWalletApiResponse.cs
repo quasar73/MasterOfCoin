@@ -1,6 +1,6 @@
 ﻿namespace MasterOfCoin.API.ApiContracts.Wallet;
 
-public record CreateWalletResponse(
+public record CreateWalletApiResponse(
     Guid Id,
     string Name, 
     decimal InitialValue, 

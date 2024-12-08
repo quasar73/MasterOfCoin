@@ -6,7 +6,16 @@ namespace Wallets.API.Data.Repositories;
 
 public class WalletRepository(IDatabase _database) : IWalletRepository
 {
-    public Task CreateWallet(WalletInDb walletInDb) => _database.Execute(
-        "INSERT INTO wallets(id, name, currency, value, cumulative, space_id, account_id)" +
-        "VALUES (@Id, @Name, @Currency, @Value, @Cumulative, @SpaceId, @AccountId)", walletInDb);
+    public Task<int> CreateWallet(WalletInDb walletInDb) => _database.Execute(
+        "INSERT INTO wallets(id, name, currency, value, cumulative, space_id, account_id, archived)" +
+        "VALUES (@Id, @Name, @Currency, @Value, @Cumulative, @SpaceId, @AccountId, @Archived)", walletInDb);
+
+    public Task<int> EditWallet(WalletInDb walletInDb) => _database.Execute(
+        "UPDATE wallets SET name = @Name, currency = @Currency, cumulative = @Cumulative, value = @Value, archived = @Archived", walletInDb);
+
+    public Task<WalletInDb> Find(Guid walletId, Guid spaceId) =>
+        _database.GetOrDefault<WalletInDb>("SELECT * FROM wallets WHERE id = @walletId AND space_id = @spaceId", new { walletId, spaceId });
+
+    public Task<List<WalletInDb>> GetList(Guid spaceId) =>
+        _database.GetList<WalletInDb>("SELECT * FROM wallets WHERE space_id = @spaceId", new { spaceId });
 }

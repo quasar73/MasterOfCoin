@@ -4,5 +4,8 @@ namespace Wallets.API.Data.Interfaces;
 
 public interface IWalletRepository
 {
-    Task CreateWallet(WalletInDb walletInDb);
+    Task<int> CreateWallet(WalletInDb walletInDb);
+    Task<int> EditWallet(WalletInDb walletInDb);
+    Task<WalletInDb?> Find(Guid walletId, Guid spaceId);
+    Task<List<WalletInDb>> GetList(Guid spaceId);
 }

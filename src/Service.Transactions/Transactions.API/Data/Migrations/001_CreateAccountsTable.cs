@@ -9,7 +9,7 @@ public class CreateAccountsTable : ForwardOnlyMigration
     {
         Create.Table("accounts")
             .WithColumn("id").AsGuid().PrimaryKey()
-            .WithColumn("name").AsString().NotNullable()
-            .WithColumn("space_id").AsGuid().NotNullable();
+            .WithColumn("space_id").AsGuid().NotNullable()
+            .WithColumn("type").AsString().NotNullable();
     }
 }

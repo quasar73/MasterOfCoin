@@ -2,4 +2,4 @@
 
 namespace Wallets.Contracts.Contracts;
 
-public record CreateWalletResponse(RequestStatus Status, Guid? WalletId);
+public record WalletsListResponse(RequestStatus Status, WalletResponse[] Wallets);

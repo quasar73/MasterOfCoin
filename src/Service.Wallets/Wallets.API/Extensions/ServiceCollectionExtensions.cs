@@ -1,6 +1,7 @@
 ﻿using Wallets.API.Data.Interfaces;
 using Wallets.API.Data.Repositories;
 using Wallets.API.Services;
+using Wallets.API.Services.Interfaces;
 using Wallets.Contracts.Interfaces;
 
 namespace Wallets.API.Extensions;
@@ -13,7 +14,8 @@ public static class ServiceCollectionExtensions
     {
         return services
             .AddRepositories()
-            .AddApi();
+            .AddApi()
+            .AddSingleton<IModelMapper, ModelMapper>();
     }
     
     private static IServiceCollection AddApi(this IServiceCollection services)

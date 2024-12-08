@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Lib.MessageBroker.Contracts;
+﻿using Lib.MessageBroker.Contracts;
 using Microsoft.Extensions.Options;
 using Transactions.Contracts.Messages;
 

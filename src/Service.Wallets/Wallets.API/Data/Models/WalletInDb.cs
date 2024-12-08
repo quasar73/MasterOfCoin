@@ -9,4 +9,5 @@ public class WalletInDb
     public bool Cumulative { get; set; }
     public Guid SpaceId { get; set; }
     public Guid AccountId { get; set; }
+    public bool Archived { get; set; }
 }

@@ -14,6 +14,7 @@ public class CreateWalletsTable : ForwardOnlyMigration
             .WithColumn("value").AsDecimal().NotNullable()
             .WithColumn("cumulative").AsBoolean().NotNullable()
             .WithColumn("space_id").AsGuid().NotNullable()
-            .WithColumn("account_id").AsGuid().NotNullable();
+            .WithColumn("account_id").AsGuid().NotNullable()
+            .WithColumn("archived").AsBoolean().NotNullable();
     }
 }

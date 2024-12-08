@@ -7,8 +7,14 @@ import "google/protobuf/any.proto";
 
 package Wallets.Contracts;
 
-message StatusCode {
-  string Status = 1;
+enum RequestStatus {
+  Success = 0;
+  NotFound = 1;
+  InvalidData = 2;
+}
+
+message StatusResponse {
+  RequestStatus Status = 1;
 }
 
 message CreateWalletRequest {
@@ -19,7 +25,48 @@ message CreateWalletRequest {
   bool Cumulative = 5;
 }
 
+message EditWalletRequest {
+  string WalletId = 1;
+  google.protobuf.StringValue Name = 2;
+  google.protobuf.Any Value = 3;
+  google.protobuf.StringValue Currency = 4;
+  google.protobuf.BoolValue Cumulative = 5;
+  string SpaceId = 6;
+}
+
+message ArchiveWalletRequest {
+  string WalletId = 1;
+  string SpaceId = 2;
+}
+
+message GetWalletsRequest {
+  string SpaceId = 1;
+}
+
+message GetWalletRequest {
+  string SpaceId = 1;
+  string WalletId = 2;
+}
+
+message WalletResponse {
+  string Id = 1;
+  string Name = 2;
+  string Currency = 3;
+  google.protobuf.Any Value = 4;
+  bool Cumulative = 5;
+}
+
+message GetWalletResponse {
+  RequestStatus Status = 1;
+  WalletResponse Wallet = 2;
+}
+
+message WalletsListResponse {
+  RequestStatus Status = 1;
+  repeated WalletResponse Wallets = 2;
+}
+
 message CreateWalletResponse {
-  StatusCode StatusCode = 1;
+  RequestStatus Status = 1;
   string WalletId = 2;
 }

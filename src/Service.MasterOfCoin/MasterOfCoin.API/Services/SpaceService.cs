@@ -4,7 +4,9 @@ using MasterOfCoin.API.Services.Interfaces;
 
 namespace MasterOfCoin.API.Services;
 
-public class SpaceService(ISpaceRepository _repository, IUserRepository _userRepository) : ISpaceService
+public class SpaceService(
+    ISpaceRepository _repository, 
+    IUserRepository _userRepository) : ISpaceService
 {
     public async Task<SpaceInDb> CreateSpace(string name, string username)
     {
